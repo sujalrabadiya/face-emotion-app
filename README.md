@@ -15,3 +15,6 @@ This is a simple web-based face emotion detection application built with **Strea
   - Neutral
 - Highlights the face and shows the predicted emotion on the image
 - Clean and responsive UI with **Streamlit**
+
+## 💻 Live Demo
+- [Streamlit.io](https://face-emotion-app-sujalrabadiya.streamlit.app/)
