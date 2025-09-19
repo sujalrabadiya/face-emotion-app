@@ -38,7 +38,7 @@ def detect_emotion(image):
         roi_gray = gray[y:y+h, x:x+w]
 
         # Resize the face to match model input size
-        roi = cv2.resize(roi_gray, (48, 48))
+        roi = cv2.resize(roi_gray, (64, 64))
 
         # Normalize pixel values and prepare for prediction
         roi = roi.astype("float") / 255.0
@@ -74,3 +74,4 @@ if uploaded_file is not None:
         label, result_img = detect_emotion(image)  # Call emotion detection
         st.success(f"Predicted Emotion: {label}")  # Show predicted emotion
         st.image(result_img, caption=f"Emotion: {label}", use_column_width=True)  # Show output image
+
