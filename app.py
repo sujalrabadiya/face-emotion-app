@@ -8,7 +8,7 @@ from PIL import Image   # For image file handling
 from camera import VideoCamera  # Import the VideoCamera class from camera.py
 
 # Load the pre-trained emotion detection model (without compiling)
-model = load_model("../emotion_model.hdf5", compile=False)
+model = load_model("emotion_model.hdf5", compile=False)
 
 # Define the list of emotion labels corresponding to model predictions
 emotions = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
