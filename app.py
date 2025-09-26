@@ -61,37 +61,28 @@ def detect_emotion(image):
 # Streamlit UI code
 st.title("😊 Real Time Face Emotion Detector")  # App title
 
-# Option to use camera for real-time detection
-if "camera_running" not in st.session_state:
-    st.session_state.camera_running = False
+# Camera mode toggle
+if "show_camera" not in st.session_state:
+    st.session_state.show_camera = False
 
-def run_camera():
-    camera = VideoCamera()
-    stop_button = st.button("Stop Camera", key="stop_camera")
-    frame_placeholder = st.empty()
-    while st.session_state.camera_running:
-        frame = camera.get_frame()
-        if frame is not None:
-            labels, result_img = detect_emotion(frame)
-            frame_placeholder.image(result_img, caption="Camera Preview", use_column_width=True)
-        else:
-            frame_placeholder.warning("Unable to access camera.")
-        import time
-        time.sleep(0.1)
-        if stop_button:
-            st.session_state.camera_running = False
-            frame_placeholder.empty()  # Clear camera preview
-            st.experimental_rerun()    # Refresh UI to show upload section
-            break
+if st.button("Use Camera"):
+    st.session_state.show_camera = True
+uploaded_file = st.file_uploader("Upload a face image", type=["jpg", "jpeg", "png"])
 
-if st.button("Use Camera", key="use_camera"):
-    st.session_state.camera_running = True
-
-if st.session_state.camera_running:
-    run_camera()
-else:
-    uploaded_file = st.file_uploader("Upload a face image", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
+# Camera input only shown after button click
+if st.session_state.show_camera:
+    uploaded_file = None
+    camera_image = st.camera_input("Take a photo")
+    if camera_image is not None:
+        image = Image.open(camera_image)
         labels, result_img = detect_emotion(image)
-        st.image(result_img, caption="Emotion Preview", use_column_width=True)
+        st.image(result_img, caption="Emotion Preview (Camera)", use_column_width=True)
+        # Optionally, reset camera mode after prediction
+        st.session_state.show_camera = False
+
+# Uploaded image prediction (always available)
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    labels, result_img = detect_emotion(image)
+    st.image(result_img, caption="Emotion Preview (Uploaded)", use_column_width=True)
+
